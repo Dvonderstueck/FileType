@@ -1,3 +1,5 @@
+import sys
+
 def find_file_type(path):
 
     magic_numbers = {
@@ -14,7 +16,12 @@ def find_file_type(path):
         return f'Dateityp von {path} konnte nicht erkannt werden'
     
 
-file_path = "/Users/dennis.vonderstueck/Downloads/fan-art-skull-kid-the-legend-of-zelda-majoras-mask-wallpaper-preview.jpg"
-result = find_file_type(file_path)
-print(result)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python script_name.py <file_path>")
+        sys.exit()
+
+    file_path = sys.argv[1]
+    result = find_file_type(file_path)
+    print(result)
 
