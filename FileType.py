@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 import sys
 
-def find_file_type(path):
+def read_file_header(path, header_length=8):
+    with open(path, 'rb') as file:
+        header = file.read(header_length)
+    return header
 
+def find_file_type(header):
     magic_numbers = {
         b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A': 'PNG',
         b'\xFF\xD8\xFF': 'JPEG',
     }
 
-    with open(path, 'rb') as file:
-        header = file.read(8)
-
-        for magic, file_type in magic_numbers.items():
-                if header.startswith(magic):
-                    return f'Datei {path} ist vom Typ {file_type}'
-        return f'Dateityp von {path} konnte nicht erkannt werden'
-    
+    for magic, file_type in magic_numbers.items():
+        fdsf = str(header)
+        magic = str(magic)
+        if fdsf.startswith(magic):
+            return file_type
+    return f'Dateityp von {path} konnte nicht erkannt werden'
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -23,6 +25,9 @@ if __name__ == "__main__":
         sys.exit()
 
     file_path = sys.argv[1]
-    result = find_file_type(file_path)
-    print(result)
+    header = read_file_header(file_path)
+    result = find_file_type(header)
+    f'Datei {file_path} ist vom Typ {result}'
+    print(f'Datei {file_path} ist vom Typ {result}')
+
 
