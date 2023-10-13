@@ -7,6 +7,9 @@ def read_file_header(path: str) -> bytes:
         header = file.read()
     return header
 
+def starts_with_binary(string1: bytes, string2: bytes) -> bool:
+    return string1[:len(string2)] == string2
+
 def find_file_type(header: bytes) -> str:
     magic_numbers = {
         b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A': 'PNG',
@@ -14,7 +17,8 @@ def find_file_type(header: bytes) -> str:
     }
 
     for magic, file_type in magic_numbers.items():
-        if header.startswith(magic):
+        #if header.startswith(magic):
+         if starts_with_binary(header, magic):
             return file_type
     raise ValueError("Unknown file type")
 
