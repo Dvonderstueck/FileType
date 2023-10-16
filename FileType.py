@@ -7,8 +7,10 @@ def read_file_header(path: str) -> bytes:
         header = file.read()
     return header
 
-def starts_with_binary(string1: bytes, string2: bytes) -> bool:
-    return string1[:len(string2)] == string2
+def starts_with_binary(file_header: bytes, magic_file: bytes) -> bool:
+    if len(file_header) < len(magic_file ):
+        return False
+    return file_header[:len(magic_file )] == magic_file 
 
 def find_file_type(header: bytes) -> str:
     magic_numbers = {

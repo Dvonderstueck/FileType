@@ -1,5 +1,5 @@
 import unittest
-from FileType import find_file_type, read_file_header  
+from FileType import find_file_type, read_file_header, starts_with_binary  
 
 class TestFindFileType(unittest.TestCase):
     def test_png_magic_number(self):
@@ -41,6 +41,40 @@ class TestMagicNumber(unittest.TestCase):
         except ValueError as e:
             expected_result: str = 'Unknown file type'
             self.assertEqual(str(e), expected_result)
+
+class TestStartsWithBinary(unittest.TestCase):
+    def test_starts_with_binary_true(self):
+        file_header: bytes = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A\xFF\xD8\xFF'
+        magic_file: bytes = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'
+        result: bool = starts_with_binary(file_header,  magic_file)
+        self.assertTrue(result)
+
+    def test_starts_with_binary_false(self):
+        file_header: bytes = b'\xFF\xD8\xFF\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'
+        magic_file: bytes = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'
+        result: bool = starts_with_binary(file_header, magic_file)
+        self.assertFalse(result)
+
+    def test_starts_with_binary_short(self):
+        file_header: bytes = b'\x89\x50\x4E\x47\x0D'
+        magic_file: bytes = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'
+        result: bool = starts_with_binary(file_header, magic_file)
+        self.assertFalse(result)
+
+    def test_starts_with_binary_empty_string(self):
+        file_header: bytes = b''
+        magic_file: bytes = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'
+        result: bool = starts_with_binary(file_header, magic_file)
+        self.assertFalse(result)
+
+    def test_starts_with_binary_both_empty_strings(self):
+        file_header: bytes = b''
+        magic_file: bytes = b''
+        result: bool = starts_with_binary(file_header, magic_file)
+        self.assertTrue(result)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
