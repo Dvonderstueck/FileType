@@ -76,8 +76,8 @@ class TestStartsWithBinary(unittest.TestCase):
     def test_starts_with_binary_long_slice(self):
         file_header: bytes = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'
         magic_file: bytes = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A\xFF\xD8\xFF'
-        result: bool = file_header[:len(magic_file)] == magic_file
-        self.assertFalse(result)
+        result: bytes = file_header[:len(magic_file)] 
+        self.assertEqual(result, file_header)
 
 
 
